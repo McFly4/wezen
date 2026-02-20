@@ -6,3 +6,4 @@ export {SHOP_FRAGMENT} from './header/HeaderQuery';
 export {MENU_QUERY} from './header/MenuQuery';
 export {HEADER_QUERY} from './header/HeaderQuery';
 export {FOOTER_QUERY} from './FooterQuery';
+export {HOME_PAGE_QUERY} from './home/HomePageQuery';
