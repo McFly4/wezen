@@ -30,23 +30,23 @@ export default function Homepage() {
 
   const backgroundField = getMetaobjectField(homePage, '1_background');
 
-  const backgroundVideoDesktop = backgroundField?.reference?.sources?.[0]?.url;
+  const backgroundVideoDesktop = backgroundField?.reference?.sources?.[1]?.url;
   const backgroundVideoMobile = getMetaobjectField(
     homePage,
     '1_background_mobile',
-  )?.reference?.sources?.[0]?.url;
+  )?.reference?.sources?.[1]?.url;
   const titleRichText = getMetaobjectField(homePage, '1_title')?.value;
   const descriptionRichText = getMetaobjectField(
     homePage,
     '1_description',
   )?.value;
+
   const ourClientsTitle = getMetaobjectField(homePage, 'our_client')?.value;
 
   const featuresField = getMetaobjectField(homePage, '1_list_title');
-  const featuresList = getMetaobjectList(featuresField, 'single_title');
-  const features = featuresList
-    .map((node) => getMetaobjectFieldValue(node, 'title'))
-    .filter(Boolean);
+  const features = featuresField?.value
+    ? (JSON.parse(featuresField.value) as string[])
+    : [];
 
   const clientImagesField = getMetaobjectField(homePage, 'images_client');
   const clientImages = getMetaobjectImages(clientImagesField);
@@ -60,13 +60,7 @@ export default function Homepage() {
       <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background Video - Desktop */}
         {backgroundVideoDesktop && (
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute w-full h-full object-cover opacity-50 hidden md:block"
-          >
+          <video autoPlay loop muted playsInline className="hidden md:block">
             <source src={backgroundVideoDesktop} type="video/mp4" />
           </video>
         )}
@@ -80,7 +74,7 @@ export default function Homepage() {
             playsInline
             className="absolute  w-full h-full object-cover opacity-50 md:hidden"
           >
-            <source src={backgroundVideoMobile} type="video/mp4" />
+            <source src={backgroundVideoMobile} />
           </video>
         )}
 
@@ -88,11 +82,15 @@ export default function Homepage() {
         <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
           {/* Title */}
           {title && (
-            <h1 className="text-5xl md:text-6xl font-light mb-6 leading-tight">
+            <h1 className="text-5xl md:text-6xl font-light mb-1 leading-tight">
               {title.split('\n').map((line, i) => (
                 <span
                   key={i}
-                  className={i === 1 ? 'text-gray-400' : 'text-white'}
+                  className={
+                    i === 1
+                      ? 'bg-gradient-to-b from-[#A0A0A0] to-[#717171] bg-clip-text text-transparent'
+                      : 'text-white'
+                  }
                 >
                   {line}
                   {i === 0 && <br />}
@@ -102,18 +100,18 @@ export default function Homepage() {
           )}
 
           {description && (
-            <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
+            <p className="text-2xl text-[#ffffffcc] mb-4 max-w-[450px] mx-auto font-light">
               {description}
             </p>
           )}
 
           {/* Features List */}
-          {features.length > 0 && (
+          {features?.length > 0 && (
             <div className="flex flex-wrap justify-center gap-6 mb-10">
               {features.map((feature: string, index: number) => (
                 <div key={index} className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-cyan-500 rounded-full" />
-                  <span className="text-sm">{feature}</span>
+                  <img src="app/assets/check.svg" alt="Check" />
+                  <span className="text-2base font-light">{feature}</span>
                 </div>
               ))}
             </div>

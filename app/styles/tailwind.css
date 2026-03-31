@@ -4,3 +4,11 @@
  */
 
 @import 'tailwindcss';
+
+body{
+    font-family: "DM Sans", sans-serif;
+}
+
+.text-2base{
+    font-size: 18px;
+}
